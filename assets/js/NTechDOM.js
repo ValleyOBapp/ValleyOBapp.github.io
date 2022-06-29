@@ -2,7 +2,8 @@ const NTechDOM = {
   meta: {
     name: "NTechDOM.js",
     author: "INFCio",
-    github: "https://github.com/INFCio/NTechDOM.js/blob/main/NTechDOM.js",
+    github:
+      "https://github.com/INFCio/NTechDOM.js/blob/main/NTechDOM.js",
     developer: {
       name: "Saffiullah Fahim",
       profile: "https://github.com/saffiullahfahim",
@@ -11,20 +12,32 @@ const NTechDOM = {
   version: "1.0",
   node: 0,
   rendered: false,
-  createElement: (element = "div", childrens = [], attributes = {}) => {
+  createElement: (
+    element = "div",
+    childrens = [],
+    attributes = {}
+  ) => {
     if (attributes.constructor.toString().indexOf("Object") >= 0) {
       for (let x in attributes) {
-        if (attributes[x].constructor.toString().indexOf("Array") < 0) {
+        if (
+          attributes[x].constructor.toString().indexOf("Array") < 0
+        ) {
           attributes[x] = String(attributes[x]).split(" ");
         }
       }
     } else attributes = {};
     const object = {
       _name: element,
-      _childrens: childrens.constructor.toString().indexOf("Array") >= 0 ? childrens : [childrens],
+      _childrens:
+        childrens.constructor.toString().indexOf("Array") >= 0
+          ? childrens
+          : [childrens],
       _attributes: attributes,
       _reuse: false,
-      _ichildrens: childrens.constructor.toString().indexOf("Array") >= 0 ? childrens : [childrens],
+      _ichildrens:
+        childrens.constructor.toString().indexOf("Array") >= 0
+          ? childrens
+          : [childrens],
       _iattributes: { ...attributes },
       append(...childrens) {
         this._childrens = this._childrens.concat(childrens);
@@ -36,45 +49,70 @@ const NTechDOM = {
         return this;
       },
       setChildren(childrens) {
-        this._childrens = childrens.constructor.toString().indexOf("Array") >= 0 ? childrens : [childrens];
+        this._childrens =
+          childrens.constructor.toString().indexOf("Array") >= 0
+            ? childrens
+            : [childrens];
         if (this._rendered && !this._reuse) {
           NTechDOM.rerender(this);
         } else if (!this._rendered && !NTechDOM.rendered) {
-          this._ichildrens = childrens.constructor.toString().indexOf("Array") >= 0 ? childrens : [childrens];
+          this._ichildrens =
+            childrens.constructor.toString().indexOf("Array") >= 0
+              ? childrens
+              : [childrens];
         }
         return this;
       },
       getChildren(children) {
-        return this._childrens[children] ? this._childrens[children] : "";
+        return this._childrens[children]
+          ? this._childrens[children]
+          : "";
       },
       removeChildren(children) {
         let arr = [...this._childrens];
-        this._childrens = arr.slice(0, children).concat(arr.slice(children + 1, arr.length));
+        this._childrens = arr
+          .slice(0, children)
+          .concat(arr.slice(children + 1, arr.length));
         if (this._rendered && !this._reuse) {
           NTechDOM.rerender(this);
         } else if (!this._rendered && !NTechDOM.rendered) {
           arr = [...this._ichildrens];
-          this._ichildrens = arr.slice(0, children).concat(arr.slice(children + 1, arr.length));
+          this._ichildrens = arr
+            .slice(0, children)
+            .concat(arr.slice(children + 1, arr.length));
         }
         return this;
       },
       insert(start, ...children) {
         let arr = [...this._childrens];
-        this._childrens = [...arr.slice(0, start), ...children, ...arr.slice(start, arr.length)];
+        this._childrens = [
+          ...arr.slice(0, start),
+          ...children,
+          ...arr.slice(start, arr.length),
+        ];
         if (this._rendered && !this._reuse) {
           NTechDOM.rerender(this);
         } else if ((!this._rendered, !NTechDOM.rendered)) {
           arr = [...this._ichildrens];
-          this._ichildrens = [...arr.slice(0, start), ...children, ...arr.slice(start, arr.length)];
+          this._ichildrens = [
+            ...arr.slice(0, start),
+            ...children,
+            ...arr.slice(start, arr.length),
+          ];
         }
         return this;
       },
       removeElement(element) {
         let arr = [...this._childrens];
         for (let children = 0; children < arr.length; children++) {
-          if (arr[children].constructor.toString().indexOf("Object") >= 0) {
+          if (
+            arr[children].constructor.toString().indexOf("Object") >=
+            0
+          ) {
             if (arr[children]._node == element._node) {
-              this._childrens = arr.slice(0, children).concat(arr.slice(children + 1, arr.length));
+              this._childrens = arr
+                .slice(0, children)
+                .concat(arr.slice(children + 1, arr.length));
             } else {
               arr[children].removeElement(element);
             }
@@ -85,9 +123,15 @@ const NTechDOM = {
         } else if (!this._rendered && !NTechDOM.rendered) {
           arr = [...this._ichildrens];
           for (let children = 0; children < arr.length; children++) {
-            if (arr[children].constructor.toString().indexOf("Object") >= 0) {
+            if (
+              arr[children].constructor
+                .toString()
+                .indexOf("Object") >= 0
+            ) {
               if (arr[children]._node == element._node) {
-                this._ichildrens = arr.slice(0, children).concat(arr.slice(children + 1, arr.length));
+                this._ichildrens = arr
+                  .slice(0, children)
+                  .concat(arr.slice(children + 1, arr.length));
               } else {
                 arr[children].removeElement(element);
               }
@@ -98,7 +142,10 @@ const NTechDOM = {
       },
       addAttribute(key, ...values) {
         if (this._attributes[key]) {
-          this._attributes[key] = [...this._attributes[key], ...values];
+          this._attributes[key] = [
+            ...this._attributes[key],
+            ...values,
+          ];
         } else {
           this._attributes[key] = values;
         }
@@ -106,7 +153,10 @@ const NTechDOM = {
           NTechDOM.rerender(this);
         } else if (!this._rendered && !NTechDOM.rendered) {
           if (this._iattributes[key]) {
-            this._iattributes[key] = [...this._iattributes[key], ...values];
+            this._iattributes[key] = [
+              ...this._iattributes[key],
+              ...values,
+            ];
           } else {
             this._iattributes[key] = values;
           }
@@ -159,9 +209,14 @@ const NTechDOM = {
         return this;
       },
       setAttribute(attributes) {
-        if (attributes.constructor.toString().indexOf("Object") >= 0) {
+        if (
+          attributes.constructor.toString().indexOf("Object") >= 0
+        ) {
           for (let x in attributes) {
-            if (attributes[x].constructor.toString().indexOf("Array") < 0) {
+            if (
+              attributes[x].constructor.toString().indexOf("Array") <
+              0
+            ) {
               attributes[x] = String(attributes[x]).split(" ");
             }
           }
@@ -175,12 +230,17 @@ const NTechDOM = {
         return this;
       },
       getAttribute(attribute) {
-        return this._attributes[attribute] ? this._attributes[attribute] : "";
+        return this._attributes[attribute]
+          ? this._attributes[attribute]
+          : "";
       },
       reset() {
         let arr = [...this._childrens];
         for (let children = 0; children < arr.length; children++) {
-          if (arr[children].constructor.toString().indexOf("Object") >= 0) {
+          if (
+            arr[children].constructor.toString().indexOf("Object") >=
+            0
+          ) {
             if (arr[children]._name == "input") {
               arr[children].changeAttribute("value", "");
               if (arr[children].file) delete arr[children].file;
@@ -245,9 +305,13 @@ const NTechDOM = {
       this.id = id;
       this.element = element;
       if (this.rendered) this.node = 0;
-      document.getElementById(id).innerHTML = element ? element._render([]) : element;
+      document.getElementById(id).innerHTML = element
+        ? element._render([])
+        : element;
       this.rendered = true;
-      if (element.onload.constructor.toString().indexOf("Function") >= 0) {
+      if (
+        element.onload.constructor.toString().indexOf("Function") >= 0
+      ) {
         element.onload();
       }
     }
@@ -262,14 +326,18 @@ const NTechDOM = {
       node.setAttribute(x, attributes[x].join(" "));
     }
     node.innerHTML = element._rerender();
-    if (element.onload.constructor.toString().indexOf("Function") >= 0) {
+    if (
+      element.onload.constructor.toString().indexOf("Function") >= 0
+    ) {
       element.onload();
     }
   },
 
   // time, post, get, readFiles, getBlobData64
   time() {
-    return fetch("https://worldtimeapi.org/api/timezone/Asia/Dhaka").then((_res) => _res.text());
+    return fetch(
+      "https://worldtimeapi.org/api/timezone/Asia/Dhaka"
+    ).then((_res) => _res.text());
   },
   post(url, data) {
     const form = new FormData();
