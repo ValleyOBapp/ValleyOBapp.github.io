@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="text/html; charset=utf-8"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+  </head>
+  <body>
+    <h1
+      style="
+        font-size: 20px;
+        font-family: monospace;
+        font-weight: 700;
+        margin-left: 20px;
+        margin-bottom: 10px;
+      "
+    >
+      Valley OBGYN Application
+    </h1>
+
+    <table
+      style="
+        width: max-content;
+        padding: 0 20px;
+        font-family: monospace;
+        font-size: 14px;
+        text-align: left;
+      "
+    >
+      <tr>
+        <th>First Name</th>
+        <td>:</td>
+        <td>\${firstName}</td>
+      </tr>
+      <tr>
+        <th>Last Name</th>
+        <td>:</td>
+        <td>\${LastName}</td>
+      </tr>
+      <tr>
+        <th>City, State</th>
+        <td>:</td>
+        <td>\${city}</td>
+      </tr>
+      <tr>
+        <th>Phone</th>
+        <td>:</td>
+        <td>\${phone}</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>:</td>
+        <td>\${email}</td>
+      </tr>
+      <tr>
+        <th>School Name</th>
+        <td>:</td>
+        <td>\${schoolName}</td>
+      </tr>
+      <tr>
+        <th>Graduation Date</th>
+        <td>:</td>
+        <td>\${graduation}</td>
+      </tr>
+    </table>
+    <div
+      style="
+        margin: 20px 20px 0;
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: 700;
+      "
+    >
+      How did you hear about us?
+    </div>
+    <div
+      style="
+        margin: 20px;
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: 400;
+        margin-top: 0px;
+      "
+    >
+      <span style="font-weight: 700; text-decoration: underline"
+        >Ans:</span
+      >
+      \${about}
+    </div>
+    <div
+      style="
+        margin: 20px 20px 0;
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: 700;
+      "
+    >
+      Resume Link: <a href="\${link}">\${link}</a>
+    </div>
+  </body>
+</html>

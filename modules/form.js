@@ -10,7 +10,9 @@ const header = d
 const h1 = d.createElement("h1", "Valley OBGYN Application");
 header.append(h1);
 
-const form = d.createElement("form").setAttribute({ class: "form" });
+const form = d
+  .createElement("form")
+  .setAttribute({ class: "form", name: "form" });
 
 const userName = d
   .createElement(
@@ -24,6 +26,7 @@ const firstName = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   placeholder: "First",
+  oninput: "nin(this, 1)",
 });
 
 const lastName = d.createElement("input").setAttribute({
@@ -31,6 +34,7 @@ const lastName = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   placeholder: "Last",
+  oninput: "nin(this, 2)",
 });
 userName.append(
   d.createElement("div", [firstName, lastName], {
@@ -55,6 +59,7 @@ const city = d.createElement("input").setAttribute({
   required: "",
   autocomplete: "off",
   spellcheck: "false",
+  oninput: "nin(this, 3)",
 });
 
 cityName.append(
@@ -78,6 +83,7 @@ const phone = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   type: "number",
+  oninput: "nin(this, 4)",
 });
 
 phoneNo.append(
@@ -101,6 +107,7 @@ const email = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   type: "email",
+  oninput: "nin(this, 5)",
 });
 
 emailAdd.append(
@@ -127,6 +134,7 @@ const school = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   type: "text",
+  oninput: "nin(this, 6)",
 });
 
 schoolName.append(
@@ -153,6 +161,7 @@ const graduation = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   type: "date",
+  onchange: "nin(this, 7)",
 });
 
 graduationDate.append(
@@ -179,6 +188,7 @@ const about = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   type: "text",
+  oninput: "nin(this, 8)",
 });
 
 aboutUs.append(
@@ -205,6 +215,7 @@ const resume = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   type: "file",
+  onchange: "fch(this, 9)",
 });
 
 resumeField.append(
@@ -218,6 +229,7 @@ resumeField.append(
 
 const button = d.createElement("button", "Submit", {
   class: "button",
+  type: "submit",
 });
 
 form.append(
@@ -233,4 +245,51 @@ form.append(
 );
 
 formDiv.append(header, form);
+
+const inputList = {
+  1: firstName,
+  2: lastName,
+  3: city,
+  4: phone,
+  5: email,
+  6: school,
+  7: graduation,
+  8: about,
+  9: resume,
+};
+
+formDiv.onload = () => {
+  document.forms["form"].onsubmit = () => {
+    submitRequest();
+  };
+  const changeInput = (v, input) => {
+    inputList[input].changeAttributeN("value", v.value);
+  };
+
+  const changeInputFile = (v, input) => {
+    inputList[input].changeAttributeN("file", v.files[0]);
+  };
+
+  window.nin = changeInput;
+  window.fch = changeInputFile;
+};
+
+const submitRequest = () => {
+  d.readFiles(resume.getAttribute("file")[0]).then((files) => {
+    d.post("", {
+      data: JSON.stringify({
+        date: "",
+        firstName: firstName.getAttribute("value")[0],
+        lastName: lastName.getAttribute("value")[0],
+        city: city.getAttribute("value")[0],
+        phone: phone.getAttribute("value")[0],
+        email: email.getAttribute("value")[0],
+        school: school.getAttribute("value")[0],
+        graduationP: graduation.getAttribute("value")[0],
+        about: about.getAttribute("value")[0],
+        resume: files[0],
+      }),
+    });
+  });
+};
 export { formDiv };
