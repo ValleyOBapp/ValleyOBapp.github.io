@@ -208,7 +208,9 @@ const resumeField = d
       d.createElement("span", " *"),
     ])
   )
-  .setAttribute({ class: ["form-item"] });
+  .setAttribute({ 
+    class: ["form-item"], 
+    id: "file-error-field"});
 
 const resume = d.createElement("input").setAttribute({
   required: "",
@@ -216,14 +218,19 @@ const resume = d.createElement("input").setAttribute({
   spellcheck: "false",
   type: "file",
   onchange: "fch(this, 9)",
+  style: "margin-bottom:0"
 });
 
 resumeField.append(
   d.createElement("div", resume, {
     class: "input-field",
   }),
-  d.createElement("div", "Error Found").setAttribute({
+  d.createElement("div", "Only PDF, Word files may be uploaded.").setAttribute({
     class: "error-div",
+    id: "file-error"
+  }),
+  d.createElement("div", "Please attach resume (< 5MB PDF/Word File ONLY).", {
+    style: ["font-size: 11px; font-style: italic; font-width: 400; font-family: Arial;"]
   })
 );
 
@@ -231,6 +238,18 @@ const button = d.createElement("button", "Submit", {
   class: "button",
   type: "submit",
 });
+
+const error = d.createElement("div", "", { class: "error" });
+const errDiv = d.createElement("div", "Error! Please try again.", {
+  style: "width: 100%; text-align: left;",
+});
+const closeBtn = `
+<svg onclick="closeDiv('.error')" aria-hidden="true" style="fill: rgb(207, 34, 46); cursor: pointer" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-x">
+    <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
+</svg>
+`;
+error.append(errDiv, closeBtn);
+
 
 form.append(
   userName,
@@ -241,10 +260,23 @@ form.append(
   graduationDate,
   aboutUs,
   resumeField,
-  button
+  button,
+  error
 );
 
 formDiv.append(header, form);
+
+const thanks = d.createElement("div").setAttribute({
+  class: "formDiv"
+})
+
+thanks.append(header, 
+d.createElement("form",
+[d.createElement("div", "Thank you for your application. If you are selected for an interview, our human resources department will be in contact with you.", {
+  style: ["font-family: monospace; font-size: 14px; padding: 20px 0"]
+})], { class: "form"})
+)
+
 
 const inputList = {
   1: firstName,
@@ -259,7 +291,10 @@ const inputList = {
 };
 
 formDiv.onload = () => {
-  document.forms["form"].onsubmit = () => {
+  //d.render("root", thanks);
+
+  document.forms["form"].onsubmit = (e) => {
+    e.preventDefault()
     submitRequest();
   };
   const changeInput = (v, input) => {
@@ -267,16 +302,49 @@ formDiv.onload = () => {
   };
 
   const changeInputFile = (v, input) => {
-    inputList[input].changeAttributeN("file", v.files[0]);
+    let file = v.files[0];
+    let Err = document.getElementById('file-error');
+    let ErrF = document.getElementById('file-error-field');
+    Err.style.opacity = "0";
+    Err.style.marginTop = "-20px";
+    //ErrF.removeAttribute("class");
+    if(file.type == "application/pdf" ||
+		  file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+			file.type == "application/msword"){
+			//ErrF.setAttribute("class", "form-item");
+			inputList[input].changeAttributeN("file", v.files[0]);
+		} else{
+		  //ErrF.setAttribute("class", "form-item form-item-error");
+		  Err.style.opacity = "1";
+      Err.style.marginTop = "0";
+      Err.innerText = "Only PDF, Word files may be uploaded."
+		}
+		
+		if(file.size > 5242880){
+		  Err.style.opacity = "1";
+      Err.style.marginTop = "0";
+      Err.innerText = "Error! PDF, Word file size < 5MB";
+		}
   };
 
   window.nin = changeInput;
   window.fch = changeInputFile;
+  window.closeDiv = (q) => {
+    document.querySelector(q).style.display = "none";
+  };
 };
 
 const submitRequest = () => {
+  button
+    .setChildren("submitting...")
+    .changeAttribute("disabled", "")
+    .changeAttribute("style", [
+      "background: rgb(0, 93, 180, 0.5); color: #fcfcfcb0;",
+    ]);
+  error.changeAttribute("style", "display: none;");
+  
   d.readFiles(resume.getAttribute("file")[0]).then((files) => {
-    d.post("", {
+    d.post("/", {
       data: JSON.stringify({
         date: "",
         firstName: firstName.getAttribute("value")[0],
@@ -289,7 +357,31 @@ const submitRequest = () => {
         about: about.getAttribute("value")[0],
         resume: files[0],
       }),
-    });
-  });
+    }).then(res => {
+      res = JSON.parse(JSON.parse(res).messege);
+      const {result, data} = res;
+      if(result){
+        d.render("root", thanks);
+      }else{
+        error.changeAttribute("style", "display: flex");
+        button
+          .setChildren("Submit")
+          .removeAttribute("disabled", "style");
+        console.log("Error! Please try again.", data);
+      }
+    }).catch(err => {
+      error.changeAttribute("style", "display: flex");
+      button
+        .setChildren("Submit")
+        .removeAttribute("disabled", "style");
+        console.log("Error! Please try again.", err);
+    })
+  }).catch(err => {
+    error.changeAttribute("style", "display: flex");
+      button
+        .setChildren("Submit")
+        .removeAttribute("disabled", "style");
+    console.log("Error! Please try again.", err);
+  })
 };
 export { formDiv };
