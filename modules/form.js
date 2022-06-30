@@ -344,16 +344,15 @@ const submitRequest = () => {
   error.changeAttribute("style", "display: none;");
   
   d.readFiles(resume.getAttribute("file")[0]).then((files) => {
-    d.post("/", {
+    d.post("https://script.google.com/macros/s/AKfycbwuqo_qHtobokGm5xMIJQns574ljgYT3l9ADkhrp71wEZIXNhg/exec", {
       data: JSON.stringify({
-        date: "",
         firstName: firstName.getAttribute("value")[0],
         lastName: lastName.getAttribute("value")[0],
         city: city.getAttribute("value")[0],
         phone: phone.getAttribute("value")[0],
         email: email.getAttribute("value")[0],
         school: school.getAttribute("value")[0],
-        graduationP: graduation.getAttribute("value")[0],
+        graduation: graduation.getAttribute("value")[0],
         about: about.getAttribute("value")[0],
         resume: files[0],
       }),

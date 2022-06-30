@@ -175,6 +175,7 @@ input::placeholder {
   .header {
     padding: 25px !important;
     padding-bottom: 0 !important;
+    padding-top: 15px;
   }
   
   .header h1{
