@@ -12,6 +12,11 @@ body {
   margin: auto;
 }
 
+.thanks{
+  animation-duration: 2s; 
+  animation-name: bounceIn;
+}
+
 .header {
   padding: 36px;
   padding-bottom: 0;
@@ -124,9 +129,13 @@ input::placeholder {
   align-items: center;
   padding: 16px;
   color: #870000;
-  animation-name: bounceIn;
+  animation-name: shakeX ;
   animation-duration: 1.5s;
 }
+
+@keyframes shakeX { from, to { transform: translate3d(0, 0, 0); } 10%, 30%, 50%, 70%, 90% { transform: translate3d(-10px, 0, 0); } 20%, 40%, 60%, 80% { transform: translate3d(10px, 0, 0); } }
+
+
 
 @keyframes bounceIn {
   from,

@@ -27,6 +27,7 @@ const firstName = d.createElement("input").setAttribute({
   spellcheck: "false",
   placeholder: "First",
   oninput: "nin(this, 1)",
+  maxlength: 40,
 });
 
 const lastName = d.createElement("input").setAttribute({
@@ -35,6 +36,7 @@ const lastName = d.createElement("input").setAttribute({
   spellcheck: "false",
   placeholder: "Last",
   oninput: "nin(this, 2)",
+  maxlength: 40,
 });
 userName.append(
   d.createElement("div", [firstName, lastName], {
@@ -60,6 +62,7 @@ const city = d.createElement("input").setAttribute({
   autocomplete: "off",
   spellcheck: "false",
   oninput: "nin(this, 3)",
+  maxlength: 80,
 });
 
 cityName.append(
@@ -82,16 +85,20 @@ const phone = d.createElement("input").setAttribute({
   required: "",
   autocomplete: "off",
   spellcheck: "false",
-  type: "number",
+  type: "text",
   oninput: "nin(this, 4)",
+  maxlength: 80,
+  //pattern: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,//"/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/",//"/^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$/",
+  //title: "(555) 555-5555, 555-555-5555, 555.555.5555, 5555555555, 555 555 5555"
 });
 
 phoneNo.append(
   d.createElement("div", phone, {
     class: "input-field",
   }),
-  d.createElement("div", "Error Found").setAttribute({
+  d.createElement("div", "Valid Phone Number required.").setAttribute({
     class: "error-div",
+    id: "phone-error"
   })
 );
 
@@ -108,6 +115,7 @@ const email = d.createElement("input").setAttribute({
   spellcheck: "false",
   type: "email",
   oninput: "nin(this, 5)",
+  maxlength: 80,
 });
 
 emailAdd.append(
@@ -135,6 +143,7 @@ const school = d.createElement("input").setAttribute({
   spellcheck: "false",
   type: "text",
   oninput: "nin(this, 6)",
+  maxlength: 80,
 });
 
 schoolName.append(
@@ -189,6 +198,7 @@ const about = d.createElement("input").setAttribute({
   spellcheck: "false",
   type: "text",
   oninput: "nin(this, 8)",
+  maxlength: 80
 });
 
 aboutUs.append(
@@ -260,14 +270,14 @@ form.append(
   graduationDate,
   aboutUs,
   resumeField,
-  button,
-  error
+  error,
+  button
 );
 
 formDiv.append(header, form);
 
 const thanks = d.createElement("div").setAttribute({
-  class: "formDiv"
+  class: ["formDiv thanks"]
 })
 
 thanks.append(header, 
@@ -294,8 +304,23 @@ formDiv.onload = () => {
   //d.render("root", thanks);
 
   document.forms["form"].onsubmit = (e) => {
-    e.preventDefault()
-    submitRequest();
+    e.preventDefault();
+    let regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    let Err = document.getElementById('phone-error')
+    Err.style.opacity = "0";
+    Err.style.marginTop = "-20px";
+    let node = phone._node;
+    let phn = document.querySelector('div [node="'+node+'"]');
+    phn.style.borderColor = "";
+    if(regex.test(phn.value)){
+      submitRequest();
+    }
+    else{
+      Err.style.opacity = "1";
+      Err.style.marginTop = "0";
+      phn.style.borderColor = "red";
+      phn.focus();
+    }
   };
   const changeInput = (v, input) => {
     inputList[input].changeAttributeN("value", v.value);
@@ -317,10 +342,13 @@ formDiv.onload = () => {
 		  //ErrF.setAttribute("class", "form-item form-item-error");
 		  Err.style.opacity = "1";
       Err.style.marginTop = "0";
+      inputList[input].changeAttributeN("file", v.files[0]);
+      inputList[input].changeAttribute("t", "");
       Err.innerText = "Only PDF, Word files may be uploaded."
 		}
 		
 		if(file.size > 5242880){
+		  inputList[input].changeAttribute("t", "");
 		  Err.style.opacity = "1";
       Err.style.marginTop = "0";
       Err.innerText = "Error! PDF, Word file size < 5MB";

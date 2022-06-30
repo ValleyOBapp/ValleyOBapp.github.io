@@ -31,7 +31,7 @@ const emailTemplete = `\`
 
     <table
       style="
-        width: max-content;
+        width: calc(100% - 40px);
         padding: 0 20px;
         font-family: monospace;
         font-size: 14px;
@@ -39,37 +39,37 @@ const emailTemplete = `\`
       "
     >
       <tr>
-        <th>First Name</th>
+        <th style="width: 150px">First Name</th>
         <td>:</td>
         <td>\${firstName}</td>
       </tr>
       <tr>
-        <th>Last Name</th>
+        <th style="width: 150px">Last Name</th>
         <td>:</td>
         <td>\${lastName}</td>
       </tr>
       <tr>
-        <th>City, State</th>
+        <th style="width: 150px">City, State</th>
         <td>:</td>
         <td>\${city}</td>
       </tr>
       <tr>
-        <th>Phone</th>
+        <th style="width: 150px">Phone</th>
         <td>:</td>
         <td>\${phone}</td>
       </tr>
       <tr>
-        <th>Email</th>
+        <th style="width: 150px">Email</th>
         <td>:</td>
         <td>\${email}</td>
       </tr>
       <tr>
-        <th>School Name</th>
+        <th style="width: 150px">School Name</th>
         <td>:</td>
         <td>\${school}</td>
       </tr>
       <tr>
-        <th>Graduation Date</th>
+        <th style="width: 150px">Graduation Date</th>
         <td>:</td>
         <td>\${graduation}</td>
       </tr>
@@ -166,7 +166,7 @@ const submitR = (data) => {
     name: 'file'
   }
   }
-  data.resume = file.id;
+  data.resume = "https://drive.google.com/file/d/"+file.id+"/view";
   
   const email = sendEmail(data);
   let emailS = '', emailE = '';
