@@ -1,5 +1,5 @@
-const ssId = "1DLBSknOZIWO-9es8rnvDu9kNTuMI86nWNyJ9NXH7Zdo";
-const emailAdd = "fahim.infc@gmail.com";
+const ssId = "1BIAyG-ab3DGk41XZnrs0IilD3iDEKcuoJ-rF7zq9Eec";
+const emailAdd = "valleyobjobs@gmail.com";
 
 const emailTemplete = `\`
 <!DOCTYPE html>
@@ -158,7 +158,7 @@ const test = () => {
 
 const submitR = (data) => {
   try{
-  const file = fileUpload(data.firstName + new Date(), data.resume, "1AGGYEjCxErhD8tiTlxLP8ROv2BMH0gGm")
+  const file = fileUpload(data.firstName + new Date(), data.resume, "1wsE2UPE8sENBZ5AIud-QqSkvvSqVuXwT")
   if(!file.result ){
   return {
     result: false,

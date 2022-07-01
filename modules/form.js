@@ -283,7 +283,7 @@ const thanks = d.createElement("div").setAttribute({
 thanks.append(header, 
 d.createElement("form",
 [d.createElement("div", "Thank you for your application. If you are selected for an interview, our human resources department will be in contact with you.", {
-  style: ["font-family: monospace; font-size: 14px; padding: 20px 0"]
+  style: ["font-family: Arial,Helvetica,sans-serif; font-size: 14px; padding: 20px 0"]
 })], { class: "form"})
 )
 
@@ -301,7 +301,7 @@ const inputList = {
 };
 
 formDiv.onload = () => {
-  //d.render("root", thanks);
+  // d.render("root", thanks);
 
   document.forms["form"].onsubmit = (e) => {
     e.preventDefault();
@@ -364,7 +364,9 @@ formDiv.onload = () => {
 
 const submitRequest = () => {
   button
-    .setChildren("submitting...")
+    .setChildren(`
+      <svg viewBox="0 0 18 18" focusable="false" ><g><path d="M15.5 9.8V8.17l-1.83-.32a5.21 5.21 0 00-.56-1.33L14.16 5 13 3.83l-1.52 1.08a8.28 8.28 0 00-1.32-.54L9.82 2.5H8.19l-.34 1.87a4.87 4.87 0 00-1.3.53L5 3.84 3.87 4.92l1 1.64a4.53 4.53 0 00-.54 1.31L2.5 8.2v1.64l1.86.34a5 5 0 00.55 1.3L3.87 13 5 14.19l1.54-1.06a4.89 4.89 0 001.31.56l.33 1.81h1.63l.33-1.86a5.38 5.38 0 001.34-.54L13 14.15 14.16 13l-1.06-1.53a5.46 5.46 0 00.57-1.34zM9 11a2 2 0 112-2 2 2 0 01-2 2z"></path></g></svg>
+    `)
     .changeAttribute("disabled", "")
     .changeAttribute("style", [
       "background: rgb(0, 93, 180, 0.5); color: #fcfcfcb0;",
@@ -372,7 +374,7 @@ const submitRequest = () => {
   error.changeAttribute("style", "display: none;");
   
   d.readFiles(resume.getAttribute("file")[0]).then((files) => {
-    d.post("https://script.google.com/macros/s/AKfycbwuqo_qHtobokGm5xMIJQns574ljgYT3l9ADkhrp71wEZIXNhg/exec", {
+    d.post("https://script.google.com/macros/s/AKfycbzWOXQ1MWe-1i2Oiox7po6k8l29e0JwUqYM5eja/exec", {
       data: JSON.stringify({
         firstName: firstName.getAttribute("value")[0],
         lastName: lastName.getAttribute("value")[0],
