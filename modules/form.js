@@ -96,10 +96,12 @@ phoneNo.append(
   d.createElement("div", phone, {
     class: "input-field",
   }),
-  d.createElement("div", "Valid Phone Number required.").setAttribute({
-    class: "error-div",
-    id: "phone-error"
-  })
+  d
+    .createElement("div", "Valid Phone Number required.")
+    .setAttribute({
+      class: "error-div",
+      id: "phone-error",
+    })
 );
 
 const emailAdd = d
@@ -198,7 +200,7 @@ const about = d.createElement("input").setAttribute({
   spellcheck: "false",
   type: "text",
   oninput: "nin(this, 8)",
-  maxlength: 80
+  maxlength: 80,
 });
 
 aboutUs.append(
@@ -218,9 +220,10 @@ const resumeField = d
       d.createElement("span", " *"),
     ])
   )
-  .setAttribute({ 
-    class: ["form-item"], 
-    id: "file-error-field"});
+  .setAttribute({
+    class: ["form-item"],
+    id: "file-error-field",
+  });
 
 const resume = d.createElement("input").setAttribute({
   required: "",
@@ -228,20 +231,28 @@ const resume = d.createElement("input").setAttribute({
   spellcheck: "false",
   type: "file",
   onchange: "fch(this, 9)",
-  style: "margin-bottom:0"
+  style: "margin-bottom:0",
 });
 
 resumeField.append(
   d.createElement("div", resume, {
     class: "input-field",
   }),
-  d.createElement("div", "Only PDF, Word files may be uploaded.").setAttribute({
-    class: "error-div",
-    id: "file-error"
-  }),
-  d.createElement("div", "Please attach resume (< 5MB PDF/Word File ONLY).", {
-    style: ["font-size: 11px; font-style: italic; font-width: 400; font-family: Arial;"]
-  })
+  d
+    .createElement("div", "Only PDF, Word files may be uploaded.")
+    .setAttribute({
+      class: "error-div",
+      id: "file-error",
+    }),
+  d.createElement(
+    "div",
+    "Please attach resume (< 5MB PDF/Word File ONLY).",
+    {
+      style: [
+        "font-size: 11px; font-style: italic; font-width: 400; font-family: Arial;",
+      ],
+    }
+  )
 );
 
 const button = d.createElement("button", "Submit", {
@@ -260,7 +271,6 @@ const closeBtn = `
 `;
 error.append(errDiv, closeBtn);
 
-
 form.append(
   userName,
   cityName,
@@ -277,16 +287,27 @@ form.append(
 formDiv.append(header, form);
 
 const thanks = d.createElement("div").setAttribute({
-  class: ["formDiv thanks"]
-})
+  class: ["formDiv thanks"],
+});
 
-thanks.append(header, 
-d.createElement("form",
-[d.createElement("div", "Thank you for your application. If you are selected for an interview, our human resources department will be in contact with you.", {
-  style: ["font-family: Arial,Helvetica,sans-serif; font-size: 14px; padding: 20px 0"]
-})], { class: "form"})
-)
-
+thanks.append(
+  header,
+  d.createElement(
+    "form",
+    [
+      d.createElement(
+        "div",
+        "Thank you for your application. If you are selected for an interview, our human resources department will be in contact with you.",
+        {
+          style: [
+            "font-family: Arial,Helvetica,sans-serif; font-size: 14px; padding: 20px 0",
+          ],
+        }
+      ),
+    ],
+    { class: "form" }
+  )
+);
 
 const inputList = {
   1: firstName,
@@ -306,16 +327,15 @@ formDiv.onload = () => {
   document.forms["form"].onsubmit = (e) => {
     e.preventDefault();
     let regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    let Err = document.getElementById('phone-error')
+    let Err = document.getElementById("phone-error");
     Err.style.opacity = "0";
     Err.style.marginTop = "-20px";
     let node = phone._node;
-    let phn = document.querySelector('div [node="'+node+'"]');
+    let phn = document.querySelector('div [node="' + node + '"]');
     phn.style.borderColor = "";
-    if(regex.test(phn.value)){
+    if (regex.test(phn.value)) {
       submitRequest();
-    }
-    else{
+    } else {
       Err.style.opacity = "1";
       Err.style.marginTop = "0";
       phn.style.borderColor = "red";
@@ -328,31 +348,37 @@ formDiv.onload = () => {
 
   const changeInputFile = (v, input) => {
     let file = v.files[0];
-    let Err = document.getElementById('file-error');
-    let ErrF = document.getElementById('file-error-field');
+    let Err = document.getElementById("file-error");
+    let ErrF = document.getElementById("file-error-field");
     Err.style.opacity = "0";
     Err.style.marginTop = "-20px";
+    Err.style.marginLeft = "150px";
     //ErrF.removeAttribute("class");
-    if(file.type == "application/pdf" ||
-		  file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-			file.type == "application/msword"){
-			//ErrF.setAttribute("class", "form-item");
-			inputList[input].changeAttributeN("file", v.files[0]);
-		} else{
-		  //ErrF.setAttribute("class", "form-item form-item-error");
-		  Err.style.opacity = "1";
+    if (
+      file.type == "application/pdf" ||
+      file.type ==
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      file.type == "application/msword"
+    ) {
+      //ErrF.setAttribute("class", "form-item");
+      inputList[input].changeAttributeN("file", v.files[0]);
+    } else {
+      //ErrF.setAttribute("class", "form-item form-item-error");
+      Err.style.opacity = "1";
       Err.style.marginTop = "0";
+      Err.style.marginLeft = "0";
       inputList[input].changeAttributeN("file", v.files[0]);
       inputList[input].changeAttribute("t", "");
-      Err.innerText = "Only PDF, Word files may be uploaded."
-		}
-		
-		if(file.size > 5242880){
-		  inputList[input].changeAttribute("t", "");
-		  Err.style.opacity = "1";
+      Err.innerText = "Only PDF, Word files may be uploaded.";
+    }
+
+    if (file.size > 5242880) {
+      inputList[input].changeAttribute("t", "");
+      Err.style.opacity = "1";
       Err.style.marginTop = "0";
+      Err.style.marginLeft = "0";
       Err.innerText = "Error! PDF, Word file size < 5MB";
-		}
+    }
   };
 
   window.nin = changeInput;
@@ -362,55 +388,77 @@ formDiv.onload = () => {
   };
 };
 
+const dateCovert = (date) => {
+  date = new Date(date);
+  return (
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getDate()).padStart(2, "0") +
+    "-" +
+    date.getFullYear()
+  );
+};
+
 const submitRequest = () => {
   button
-    .setChildren(`
+    .setChildren(
+      `
       <svg viewBox="0 0 18 18" focusable="false" ><g><path d="M15.5 9.8V8.17l-1.83-.32a5.21 5.21 0 00-.56-1.33L14.16 5 13 3.83l-1.52 1.08a8.28 8.28 0 00-1.32-.54L9.82 2.5H8.19l-.34 1.87a4.87 4.87 0 00-1.3.53L5 3.84 3.87 4.92l1 1.64a4.53 4.53 0 00-.54 1.31L2.5 8.2v1.64l1.86.34a5 5 0 00.55 1.3L3.87 13 5 14.19l1.54-1.06a4.89 4.89 0 001.31.56l.33 1.81h1.63l.33-1.86a5.38 5.38 0 001.34-.54L13 14.15 14.16 13l-1.06-1.53a5.46 5.46 0 00.57-1.34zM9 11a2 2 0 112-2 2 2 0 01-2 2z"></path></g></svg>
-    `)
+    `
+    )
     .changeAttribute("disabled", "")
     .changeAttribute("style", [
       "background: rgb(0, 93, 180, 0.5); color: #fcfcfcb0;",
     ]);
   error.changeAttribute("style", "display: none;");
-  
-  d.readFiles(resume.getAttribute("file")[0]).then((files) => {
-    d.post("https://script.google.com/macros/s/AKfycbzWOXQ1MWe-1i2Oiox7po6k8l29e0JwUqYM5eja/exec", {
-      data: JSON.stringify({
-        firstName: firstName.getAttribute("value")[0],
-        lastName: lastName.getAttribute("value")[0],
-        city: city.getAttribute("value")[0],
-        phone: phone.getAttribute("value")[0],
-        email: email.getAttribute("value")[0],
-        school: school.getAttribute("value")[0],
-        graduation: graduation.getAttribute("value")[0],
-        about: about.getAttribute("value")[0],
-        resume: files[0],
-      }),
-    }).then(res => {
-      res = JSON.parse(JSON.parse(res).messege);
-      const {result, data} = res;
-      if(result){
-        d.render("root", thanks);
-      }else{
-        error.changeAttribute("style", "display: flex");
-        button
-          .setChildren("Submit")
-          .removeAttribute("disabled", "style");
-        console.log("Error! Please try again.", data);
-      }
-    }).catch(err => {
+
+  d.readFiles(resume.getAttribute("file")[0])
+    .then((files) => {
+      d.post(
+        "https://script.google.com/macros/s/AKfycbzWOXQ1MWe-1i2Oiox7po6k8l29e0JwUqYM5eja/exec",
+        {
+          data: JSON.stringify({
+            firstName: firstName.getAttribute("value")[0],
+            lastName: lastName.getAttribute("value")[0],
+            city: city.getAttribute("value")[0],
+            phone: phone.getAttribute("value")[0],
+            email: email.getAttribute("value")[0],
+            school: school.getAttribute("value")[0],
+            graduation: dateCovert(
+              graduation.getAttribute("value")[0]
+            ),
+            about: about.getAttribute("value")[0],
+            resume: files[0],
+          }),
+        }
+      )
+        .then((res) => {
+          res = JSON.parse(JSON.parse(res).messege);
+          const { result, data } = res;
+          if (result) {
+            d.render("root", thanks);
+          } else {
+            error.changeAttribute("style", "display: flex");
+            button
+              .setChildren("Submit")
+              .removeAttribute("disabled", "style");
+            console.log("Error! Please try again.", data);
+          }
+        })
+        .catch((err) => {
+          error.changeAttribute("style", "display: flex");
+          button
+            .setChildren("Submit")
+            .removeAttribute("disabled", "style");
+          console.log("Error! Please try again.", err);
+        });
+    })
+    .catch((err) => {
       error.changeAttribute("style", "display: flex");
       button
         .setChildren("Submit")
         .removeAttribute("disabled", "style");
-        console.log("Error! Please try again.", err);
-    })
-  }).catch(err => {
-    error.changeAttribute("style", "display: flex");
-      button
-        .setChildren("Submit")
-        .removeAttribute("disabled", "style");
-    console.log("Error! Please try again.", err);
-  })
+      console.log("Error! Please try again.", err);
+    });
 };
 export { formDiv };

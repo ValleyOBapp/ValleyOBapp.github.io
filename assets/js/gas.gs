@@ -20,10 +20,10 @@ const emailTemplete = `\`
     <h1
       style="
         font-size: 20px;
-        font-family: monospace;
         font-weight: 700;
         margin-left: 20px;
         margin-bottom: 10px;
+        font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
       "
     >
       Valley OBGYN Application
@@ -33,9 +33,9 @@ const emailTemplete = `\`
       style="
         width: calc(100% - 40px);
         padding: 0 20px;
-        font-family: monospace;
         font-size: 14px;
         text-align: left;
+        font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
       "
     >
       <tr>
@@ -77,63 +77,72 @@ const emailTemplete = `\`
     <div
       style="
         margin: 20px 20px 0;
-        font-family: monospace;
         font-size: 14px;
         font-weight: 700;
+        font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
       "
     >
       How did you hear about us?
-    </div>
-    <div
-      style="
-        margin: 20px;
-        font-family: monospace;
-        font-size: 14px;
-        font-weight: 400;
-        margin-top: 0px;
-      "
-    >
       <span style="font-weight: 700; text-decoration: underline"
         >Ans:</span
       >
-      \${about}
+      <span style="font-weight: 400;">\${about}</span>
     </div>
     <div
       style="
         margin: 20px 20px 0;
-        font-family: monospace;
         font-size: 14px;
         font-weight: 700;
+        font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
       "
     >
-      Resume Link: <a href="\${link}">\${link}</a>
+      Resume Link: <a style="font-weight: 400;" href="\${link}">\${link}</a>
     </div>
   </body>
 </html>
-\``
+\``;
 
-const sendEmail = ({firstName, lastName, city, phone, email, school,  graduation, about, resume}) => {
-  try{
+const sendEmail = ({
+  firstName,
+  lastName,
+  city,
+  phone,
+  email,
+  school,
+  graduation,
+  about,
+  resume,
+}) => {
+  try {
     let link = resume;
     MailApp.sendEmail({
       to: emailAdd,
-      subject: "Valley OBGYN Application data at " + new Date().toISOString(),
-      htmlBody: eval(emailTemplete)
-    })
+      subject:
+        "Valley OBGYN Application data at " +
+        new Date().toISOString(),
+      htmlBody: eval(emailTemplete),
+    });
     return {
-       result: true
-    }
-  }catch(err){return {result:false, error: err}}
-}
+      result: true,
+    };
+  } catch (err) {
+    return { result: false, error: err };
+  }
+};
 
 const fileUpload = (fileName, base64, moveId) => {
   try {
     let spitBase = base64.split(",");
     let type = spitBase[0].split(";")[0].replace("data", "");
     let file = Utilities.newBlob(Utilities.base64Decode(spitBase[1]));
-    file = Drive.Files.insert({ title: fileName, mimeType: type }, file);
+    file = Drive.Files.insert(
+      { title: fileName, mimeType: type },
+      file
+    );
     let fileId = file.getId();
-    DriveApp.getFileById(fileId).moveTo(DriveApp.getFolderById(moveId));
+    DriveApp.getFileById(fileId).moveTo(
+      DriveApp.getFolderById(moveId)
+    );
     return { name: "fileUpload", result: true, id: fileId };
   } catch (err) {
     return { name: "fileUpload", result: false, messege: err };
@@ -142,63 +151,68 @@ const fileUpload = (fileName, base64, moveId) => {
 
 const test = () => {
   const data = {
-    firstName: "Fahim", 
-    lastName: "Gazi", 
-    city: "City", 
-    phone: "01212128", 
-    email: "fahim@gmail.com", 
-    schoolName: "School of Independent", 
-    graduation: "12/12/2022", 
-    about: "by link", 
-    link: "https://google.com"
-  }
+    firstName: "Fahim",
+    lastName: "Gazi",
+    city: "City",
+    phone: "01212128",
+    email: "fahim@gmail.com",
+    schoolName: "School of Independent",
+    graduation: "12/12/2022",
+    about: "by link",
+    link: "https://google.com",
+  };
 
-  Logger.log(submitR(data))
-}
+  Logger.log(submitR(data));
+};
 
 const submitR = (data) => {
-  try{
-  const file = fileUpload(data.firstName + new Date(), data.resume, "1wsE2UPE8sENBZ5AIud-QqSkvvSqVuXwT")
-  if(!file.result ){
-  return {
-    result: false,
-    massage: file.messege,
-    name: 'file'
-  }
-  }
-  data.resume = "https://drive.google.com/file/d/"+file.id+"/view";
-  
-  const email = sendEmail(data);
-  let emailS = '', emailE = '';
-  if(email.result){
-    emailS = "sent";
-  } else {
-    emailE = email.error;
-    //return emailE;
-  }
-  let  finalData = [];
-  for(let x in data){
-    finalData.push(data[x]);
-  }
-  finalData.push(emailS);
-  finalData = [finalData]
-  let ss = SpreadsheetApp.openById(ssId).getSheets()[0];
-  ss.insertRowBefore(2).getRange("A2:J2").setValues(finalData);
+  try {
+    const file = fileUpload(
+      data.firstName + new Date(),
+      data.resume,
+      "1wsE2UPE8sENBZ5AIud-QqSkvvSqVuXwT"
+    );
+    if (!file.result) {
+      return {
+        result: false,
+        massage: file.messege,
+        name: "file",
+      };
+    }
+    data.resume =
+      "https://drive.google.com/file/d/" + file.id + "/view";
 
-  return {
-    result: true,
-    message: "success",
-    email: emailE
-  }
-  }
-  catch(err){
+    const email = sendEmail(data);
+    let emailS = "",
+      emailE = "";
+    if (email.result) {
+      emailS = "sent";
+    } else {
+      emailE = email.error;
+      //return emailE;
+    }
+    let finalData = [];
+    for (let x in data) {
+      finalData.push(data[x]);
+    }
+    finalData.push(emailS);
+    finalData = [finalData];
+    let ss = SpreadsheetApp.openById(ssId).getSheets()[0];
+    ss.insertRowBefore(2).getRange("A2:J2").setValues(finalData);
+
+    return {
+      result: true,
+      message: "success",
+      email: emailE,
+    };
+  } catch (err) {
     return {
       result: false,
-       message: err,
-       name: 'submit'
-}
-    }
-}
+      message: err,
+      name: "submit",
+    };
+  }
+};
 
 const doPost = (e) => {
   try {
@@ -211,7 +225,7 @@ const doPost = (e) => {
         name: "doPost",
         messege: JSON.stringify(result),
       })
-    ); 
+    );
   } catch (err) {
     return ContentService.createTextOutput(
       JSON.stringify({
@@ -226,7 +240,3 @@ const doPost = (e) => {
 const doGet = (e) => {
   return ContentService.createTextOutput("Oops!. 404 not found.");
 };
-
-
-
-
