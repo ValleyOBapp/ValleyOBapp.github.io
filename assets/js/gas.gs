@@ -82,10 +82,7 @@ const emailTemplete = `\`
         font-family: 'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
       "
     >
-      How did you hear about us?
-      <span style="font-weight: 700; text-decoration: underline"
-        >Ans:</span
-      >
+      How did you hear about us? 
       <span style="font-weight: 400;">\${about}</span>
     </div>
     <div
@@ -101,6 +98,17 @@ const emailTemplete = `\`
   </body>
 </html>
 \``;
+
+const dateCovert = (date) => {
+  date = new Date(date);
+  return (
+    String(date.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(date.getDate()).padStart(2, "0") +
+    "-" +
+    date.getFullYear()
+  );
+};
 
 const sendEmail = ({
   firstName,
@@ -119,7 +127,8 @@ const sendEmail = ({
       to: emailAdd,
       subject:
         "Valley OBGYN Application data at " +
-        new Date().toISOString(),
+        dateCovert(new Date().toISOString()) +
+        new Date().toISOString().substr(10),
       htmlBody: eval(emailTemplete),
     });
     return {
@@ -168,7 +177,7 @@ const test = () => {
 const submitR = (data) => {
   try {
     const file = fileUpload(
-      data.firstName + new Date(),
+      data.firstName + " " + new Date().getTime(),
       data.resume,
       "1wsE2UPE8sENBZ5AIud-QqSkvvSqVuXwT"
     );
