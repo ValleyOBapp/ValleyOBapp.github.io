@@ -88,7 +88,7 @@ const phone = d.createElement("input").setAttribute({
   type: "text",
   oninput: "nin(this, 4)",
   maxlength: 80,
-  placeholder: "xxx-xxx-xxxx"
+  placeholder: "XXX-XXX-XXXX"
   //pattern: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,//"/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/",//"/^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$/",
   //title: "(555) 555-5555, 555-555-5555, 555.555.5555, 5555555555, 555 555 5555"
 });
