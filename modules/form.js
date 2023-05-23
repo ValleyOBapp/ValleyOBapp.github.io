@@ -416,7 +416,7 @@ const submitRequest = () => {
   d.readFiles(resume.getAttribute("file")[0])
     .then((files) => {
       d.post(
-        "https://script.google.com/macros/s/AKfycbzWOXQ1MWe-1i2Oiox7po6k8l29e0JwUqYM5eja/exec",
+        "https://script.google.com/macros/s/AKfycbwuqo_qHtobokGm5xMIJQns574ljgYT3l9ADkhrp71wEZIXNhg/exec",
         {
           data: JSON.stringify({
             firstName: firstName.getAttribute("value")[0],

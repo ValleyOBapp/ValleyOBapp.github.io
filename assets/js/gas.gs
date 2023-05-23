@@ -1,5 +1,5 @@
-const ssId = "1BIAyG-ab3DGk41XZnrs0IilD3iDEKcuoJ-rF7zq9Eec";
-const emailAdd = "valleyobjobs@gmail.com";
+const ssId = "1DLBSknOZIWO-9es8rnvDu9kNTuMI86nWNyJ9NXH7Zdo";
+const emailAdd = "valleyobapp@gmail.com";
 
 const emailTemplete = `\`
 <!DOCTYPE html>
@@ -181,7 +181,7 @@ const submitR = (data) => {
     const file = fileUpload(
       data.lastName + " " + new Date().getTime(),
       data.resume,
-      "1wsE2UPE8sENBZ5AIud-QqSkvvSqVuXwT"
+      "1lN3gZt-ldPAqD68srGYMyA5MIrxQ695t"
     );
     if (!file.result) {
       return {
